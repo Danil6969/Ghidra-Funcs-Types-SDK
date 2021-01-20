@@ -1,3 +1,5 @@
+typedef unsigned int    code;
+
 typedef unsigned char   undefined; //size = 1
 
 typedef unsigned char    byte; //size = 1
