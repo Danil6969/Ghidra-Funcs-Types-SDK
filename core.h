@@ -11,7 +11,7 @@ void * memset(void *, const int, unsigned long long);
   typeof(x) _tmp1 = (x); \
   *(t*)_tmp1; })
 
-#define COPY(x, s, a) memcpy(a, x, s)
+#define COPY(a, x, s) memcpy(a, x, s)
 
 #define TOARR(x, t, s) ({ \
   static byte _tmp1[s]; \
