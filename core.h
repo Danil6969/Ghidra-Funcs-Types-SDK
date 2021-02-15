@@ -19,6 +19,13 @@ void * memset(void *, const int, unsigned long long);
   memcpy(_tmp1, &_tmp2, s); \
   _tmp1; })
 
+// TODO: use struct for thread safety
+
+#define NEWARR(size, macro) ({ \
+  static byte _tmp0[size]; \
+  macro; \
+  _tmp0; })
+
 //'N' postfix means new array
 //'T' postfix means typed output
 
@@ -29,10 +36,7 @@ void * memset(void *, const int, unsigned long long);
   memcpy(_tmp3, _tmp1, s2); \
   memcpy(_tmp3 + s2, _tmp2, s1); })
 
-#define CONCATN(x, y, s1, s2, s3) ({ \
-  static byte _tmp0[s3]; \
-  CONCAT(x, y, s1, s2, s3, _tmp0); \
-  _tmp0; })
+#define CONCATN(x, y, s1, s2, s3) NEWARR(s3,CONCAT(x, y, s1, s2, s3, _tmp0))
 
 #define CONCATT(x, y, s1, s2, s3, t) ({ \
   *(t*)CONCATN(x, y, s1, s2, s3); })
@@ -42,10 +46,7 @@ void * memset(void *, const int, unsigned long long);
   byte* _tmp2 = a; \
   memcpy(_tmp2, _tmp1 + n, s2); })
 
-#define SUBN(x, n, s1, s2) ({ \
-  static byte _tmp0[s2]; \
-  SUB(x, n, s1, s2, _tmp0); \
-  _tmp0; })
+#define SUBN(x, n, s1, s2) NEWARR(s2,SUB(x, n, s1, s2, _tmp0))
 
 #define SUBT(x, n, s1, s2, t) ({ \
   *(t*)SUBN(x, n, s1, s2); })
@@ -56,10 +57,7 @@ void * memset(void *, const int, unsigned long long);
   memset(_tmp2, 0, s2); \
   memcpy(_tmp2, _tmp1, s1); })
 
-#define ZEXTN(x, s1, s2) ({ \
-  static byte _tmp0[s2]; \
-  ZEXT(x, s1, s2, _tmp0); \
-  _tmp0; })
+#define ZEXTN(x, s1, s2) NEWARR(s2, ZEXT(x, s1, s2, _tmp0))
 
 #define ZEXTT(x, s1, s2, t) ({ \
   *(t*)ZEXTN(x, s1, s2); })
@@ -70,10 +68,7 @@ void * memset(void *, const int, unsigned long long);
   memset(_tmp2, 0xff * ((_tmp1[s1 - 1]) >> 7), s2); \
   memcpy(_tmp2, _tmp1, s1); })
 
-#define SEXTN(x, s1, s2) ({ \
-  static byte _tmp0[s2]; \
-  SEXT(x, s1, s2, _tmp0); \
-  _tmp0; })
+#define SEXTN(x, s1, s2) NEWARR(s2, SEXT(x, s1, s2, _tmp0))
 
 #define SEXTT(x, s1, s2, t) ({ \
   *(t*)SEXTN(x, s1, s2); })
