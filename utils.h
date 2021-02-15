@@ -9,7 +9,7 @@
 // i.e. you must get rid of "warning: address of stack memory associated with local variable 'abVar1' returned [-Wreturn-stack-address]"
 // or you will get UB especially at -O1 and higher
 
-#define COPY16(x, a) COPY(x, 16, a)
+#define COPY16(a, x) COPY(a, x, 16)
 
 #define TOARR1(x, t) TOARR(x, t, 1)
 #define TOARR2(x, t) TOARR(x, t, 2)
