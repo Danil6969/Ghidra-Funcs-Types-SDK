@@ -26,6 +26,12 @@ void * memset(void *, const int, unsigned long long);
 //'N' postfix means new array
 //'T' postfix means typed output
 
+#define SUBN(x, n, s1, s2) ({ \
+  byte* _tmp1 = x; \
+  _tmp1 + n; })
+
+#define SUBT(x, n, s1, s2, t) (*(t*)SUBN(x, n, s1, s2))
+
 #define CONCAT(x, y, s1, s2, s3, a) ({ \
   byte* _tmp1 = y; \
   byte* _tmp2 = x; \
@@ -37,16 +43,6 @@ void * memset(void *, const int, unsigned long long);
 
 #define CONCATT(x, y, s1, s2, s3, t) ({ \
   *(t*)CONCATN(x, y, s1, s2, s3); })
-
-#define SUB(x, n, s1, s2, a) ({ \
-  byte* _tmp1 = x; \
-  byte* _tmp2 = a; \
-  memcpy(_tmp2, _tmp1 + n, s2); })
-
-#define SUBN(x, n, s1, s2) NEWARR(s2,SUB(x, n, s1, s2, _tmp0.arr))
-
-#define SUBT(x, n, s1, s2, t) ({ \
-  *(t*)SUBN(x, n, s1, s2); })
 
 #define ZEXT(x, s1, s2, a) ({ \
   byte* _tmp1 = x; \
