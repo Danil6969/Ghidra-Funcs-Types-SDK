@@ -23,12 +23,22 @@ void * memset(void *, const int, unsigned long long);
   t _tmp1 = (t)(x); \
   memcpy(_tmp0.arr, &_tmp1, s); }))
 
-//'N' postfix means new array
 //'T' postfix means typed output
 
-#define SUBN(x, n, s1, s2) ({ \
+#define PARTIAL(x, n) ({ \
   byte* _tmp1 = x; \
   _tmp1 + n; })
+
+#define PARTIALT(x, n, t) (*(t*)PARTIAL(x, n))
+
+//'N' postfix means new array
+
+#define SUB(x, n, s1, s2, a) ({ \
+  byte* _tmp1 = x; \
+  byte* _tmp2 = a; \
+  memcpy(_tmp2, _tmp1 + n, s2); })
+
+#define SUBN(x, n, s1, s2) NEWARR(s2,SUB(x, n, s1, s2, _tmp0.arr))
 
 #define SUBT(x, n, s1, s2, t) (*(t*)SUBN(x, n, s1, s2))
 
@@ -41,8 +51,7 @@ void * memset(void *, const int, unsigned long long);
 
 #define CONCATN(x, y, s1, s2, s3) NEWARR(s3,CONCAT(x, y, s1, s2, s3, _tmp0.arr))
 
-#define CONCATT(x, y, s1, s2, s3, t) ({ \
-  *(t*)CONCATN(x, y, s1, s2, s3); })
+#define CONCATT(x, y, s1, s2, s3, t) (*(t*)CONCATN(x, y, s1, s2, s3))
 
 #define ZEXT(x, s1, s2, a) ({ \
   byte* _tmp1 = x; \
@@ -52,8 +61,7 @@ void * memset(void *, const int, unsigned long long);
 
 #define ZEXTN(x, s1, s2) NEWARR(s2, ZEXT(x, s1, s2, _tmp0.arr))
 
-#define ZEXTT(x, s1, s2, t) ({ \
-  *(t*)ZEXTN(x, s1, s2); })
+#define ZEXTT(x, s1, s2, t) (*(t*)ZEXTN(x, s1, s2))
 
 #define SEXT(x, s1, s2, a) ({ \
   byte* _tmp1 = x; \
@@ -63,5 +71,28 @@ void * memset(void *, const int, unsigned long long);
 
 #define SEXTN(x, s1, s2) NEWARR(s2, SEXT(x, s1, s2, _tmp0.arr))
 
-#define SEXTT(x, s1, s2, t) ({ \
-  *(t*)SEXTN(x, s1, s2); })
+#define SEXTT(x, s1, s2, t) (*(t*)SEXTN(x, s1, s2))
+
+// variable indexed extraction
+#define EXTRACTIND(x, n, s1, s2, a) ({ \
+  byte* _tmp1 = x; \
+  byte* _tmp2 = a; \
+  typeof(n) _tmp3 = n; \
+  memcpy(_tmp2, _tmp1 + _tmp3, s2); })
+
+#define EXTRACTINDN(x, n, s1, s2) NEWARR(s2, EXTRACTIND(x, n, s1, s2, _tmp0.arr))
+
+#define EXTRACTINDT(x, n, s1, s2, t) (*(t*)EXTRACTINDN(x, n, s1, s2))
+
+// variable indexed insertion
+#define INSERTIND(x, y, n, s1, s2, a) ({ \
+  byte* _tmp1 = x; \
+  byte* _tmp2 = y; \
+  byte* _tmp3 = a; \
+  typeof(n) _tmp4 = n; \
+  memcpy(_tmp3, _tmp1, s1); \
+  memcpy(_tmp3 + _tmp4, _tmp2, s2); })
+
+#define INSERTINDN(x, y, n, s1, s2) NEWARR(s1, INSERTIND(x, y, n, s1, s2, _tmp0.arr))
+
+#define INSERTINDT(x, y, n, s1, s2, t) (*(t*)INSERTINDN(x, y, n, s1, s2))
