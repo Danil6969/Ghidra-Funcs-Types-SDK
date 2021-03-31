@@ -7,13 +7,6 @@
 
 // DO NOT use "_tmp" vars anywhere else in your code!
 
-// also add "static" for anything you return by address in your functions, like:
-// static byte abVar1 [16];
-// ...
-// return abVar1;
-// i.e. you must get rid of "warning: address of stack memory associated with local variable 'abVar1' returned [-Wreturn-stack-address]"
-// or you will get UB especially at -O1 and higher
-
 #define COPY10(a, x) COPY(a, x, 10)
 #define COPY12(a, x) COPY(a, x, 12)
 #define COPY14(a, x) COPY(a, x, 14)
