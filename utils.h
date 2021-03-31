@@ -50,7 +50,7 @@
 #define SUB16_1T(x, n, t) SUBT(x, n, 16, 1, t)
 #define SUB16_4T(x, n, t) SUBT(x, n, 16, 4, t)
 
-#define ZEXT4_16( x) ZEXTN(x, 4, 16)
+#define ZEXT4_16(x) ZEXTN(x, 4, 16)
 
 #define SEXT4_16(x) SEXTN(x, 4, 16)
 
